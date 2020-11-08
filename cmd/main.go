@@ -1,13 +1,14 @@
 // docker run --name=todo-db -e POSTGRES_PASSWORD='qwerty' -p 5436:5432 -d --rm postgres
+// docker exec -it cc594a370ca7 psql -U postgres
 
 package main
 
 import (
-	"log"
 	"os"
 
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
+	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 
 	"github.com/lvl0nax/tutorial_rest_todo/pkg/handler"
@@ -18,12 +19,14 @@ import (
 )
 
 func main() {
+	logrus.SetFormatter(new(logrus.JSONFormatter))
+
 	if err := initConfig(); err != nil {
-		log.Fatalf("Config initializing error: %s", err.Error())
+		logrus.Fatalf("Config initializing error: %s", err.Error())
 	}
 
 	if err := godotenv.Load(); err != nil {
-		log.Fatalf("Failed loading ENV variables: %s", err.Error())
+		logrus.Fatalf("Failed loading ENV variables: %s", err.Error())
 	}
 
 	db, err := repository.NewPostgresDB(repository.Config{
@@ -36,7 +39,7 @@ func main() {
 	})
 
 	if err != nil {
-		log.Fatalf("DB connection failed. Error: %s", err.Error())
+		logrus.Fatalf("DB connection failed. Error: %s", err.Error())
 	}
 
 	repos := repository.NewRepository(db)
@@ -46,7 +49,7 @@ func main() {
 	srv := new(todo.Server)
 
 	if err := srv.Run(viper.GetString("port"), handler.InitRoutes()); err != nil {
-		log.Fatalf("http server run failed. Error: %s", err.Error())
+		logrus.Fatalf("http server run failed. Error: %s", err.Error())
 	}
 }
 
