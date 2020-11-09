@@ -1,6 +1,3 @@
-// docker run --name=todo-db -e POSTGRES_PASSWORD='qwerty' -p 5436:5432 -d --rm postgres
-// docker exec -it cc594a370ca7 psql -U postgres
-
 package main
 
 import (
