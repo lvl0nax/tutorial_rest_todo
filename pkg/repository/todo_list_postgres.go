@@ -15,7 +15,7 @@ type TodoListPostgres struct {
 }
 
 func NewTodoListPostgres(db *sqlx.DB) *TodoListPostgres {
-	return &TodoListPostgres{db}
+	return &TodoListPostgres{db: db}
 }
 
 func (r *TodoListPostgres) Create(userId int, list todo.TodoList) (int, error) {
