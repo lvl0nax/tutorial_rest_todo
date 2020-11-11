@@ -6,7 +6,7 @@ docker run --name=todo-db -e POSTGRES_PASSWORD='qwerty' -p 5436:5432 -d --rm pos
 ### Exec psql for the started Postgres container
 ```
 docker exec -it [CONTAINER ID]  psql -U postgres
-docker exec -it cc594a370ca7 psql -U postgres
+docker exec -it 0342e999819b psql -U postgres
 ```
 
 ### Migrate DB
